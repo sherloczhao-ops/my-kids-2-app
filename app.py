@@ -1,81 +1,86 @@
 import streamlit as st
 import random
 
-# --- 1. Apple 教育美学：极致空间优化与夜间模式锁定 ---
+# --- 1. 像素级还原图片设计风格 ---
 st.markdown("""
 <style>
-/* 锁定背景，适配所有模式 */
+/* 背景色：奶黄色 */
 [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-    background-color: #F2F2F7 !important; 
+    background-color: #FFFBE6 !important;
 }
 
-/* 顶部紧凑导航 */
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 5px;
+/* 顶部胶囊切换按钮 */
+.stButton > button[key^="nav_"] {
+    border-radius: 50px !important;
+    height: 45px !important;
+    font-size: 16px !important;
+    border: 2px solid #E0E0E0 !important;
+    background-color: white !important;
+    color: #666 !important;
+}
+.stButton > button[key*="active"] {
+    background-color: #A3D9A5 !important; /* 绿色激活态 */
+    color: white !important;
+    border: none !important;
 }
 
-/* 题目卡片：高度压缩 */
-.question-card {
+/* 主题目卡片：加厚橙/蓝边框 */
+.question-container {
     background: white;
-    border-radius: 25px;
-    padding: 20px 10px;
+    border: 8px solid #FFB800; /* 标志性的黄色加厚边框 */
+    border-radius: 40px;
+    padding: 30px 15px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    margin: 5px 0;
+    margin: 15px auto;
+    max-width: 350px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
 }
 
-.huge-emoji { font-size: 80px !important; margin: 0; }
-.huge-math { font-size: 60px !important; font-weight: 800; color: #1D1D1F; margin: 0; }
+.mode-label { color: #888; font-size: 14px; margin-bottom: 5px; text-align: left; padding-left: 10px; }
+.huge-text { font-size: 80px !important; font-weight: 900; color: #333; margin: 10px 0; }
 
-/* 按钮网格：居中且间距合理 */
+/* 答案按钮：还原图片中的 #FF6F61 红色 */
 div[data-testid="stHorizontalBlock"] {
-    gap: 10px !important;
+    max-width: 350px;
+    margin: 0 auto;
 }
-
-.stButton button {
-    width: 100% !important;
-    height: 70px !important; /* 压缩高度以适应屏幕 */
-    font-size: 26px !important;
-    font-weight: 600;
-    border-radius: 18px;
-    border: none;
-    background-color: white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-    color: #007AFF !important; /* Apple Blue */
+.stButton > button[key^="btn_"] {
+    background-color: #FF6F61 !important; /* 图片中的主红色 */
+    color: white !important;
+    border-radius: 12px !important;
+    height: 65px !important;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    border: none !important;
+    box-shadow: 0 4px 0 #E55B4F !important; /* 底部深色投影 */
+    margin-bottom: 10px !important;
 }
 
 /* 搞怪表情动画 */
-@keyframes wobble {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(-10deg); }
-    75% { transform: rotate(10deg); }
-    100% { transform: rotate(0deg); }
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
-.funny-error {
-    font-size: 100px;
-    text-align: center;
-    animation: wobble 0.3s ease-in-out;
-}
+.funny-error { font-size: 80px; text-align: center; animation: shake 0.5s infinite; }
 
-/* 隐藏不必要的 Streamlit 元素 */
-#MainMenu, footer {visibility: hidden;}
+/* 隐藏 Streamlit 默认页脚 */
+footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
-# --- 2. 核心逻辑与 100 词库 ---
+# --- 2. 核心词库与逻辑 ---
 WORDS_DB = {
-    "太阳": "☀️", "月亮": "🌙", "大树": "🌳", "苹果": "🍎", "小狗": "🐶",
-    "汽车": "🚗", "飞机": "✈️", "兔子": "🐰", "大象": "🐘", "花朵": "🌸",
-    "糖果": "🍬", "雨伞": "☂️", "香蕉": "🍌", "西瓜": "🍉", "书本": "📖"
-    # ... 保持之前的100词库
+    "太阳": "☀️", "月亮": "🌙", "星星": "⭐", "彩虹": "🌈", "大树": "🌳",
+    "苹果": "🍎", "小狗": "🐶", "兔子": "🐰", "汽车": "🚗", "飞机": "✈️"
+    # 这里可根据需要继续扩展至100个
 }
 
 def refresh_q(mode):
     st.session_state.answered = False
-    st.session_state.wrong_trigger = False
+    st.session_state.show_error = False
     if mode == "math":
         op = random.choice(['+', '-'])
         if op == '+':
@@ -84,69 +89,70 @@ def refresh_q(mode):
         else:
             n1 = random.randint(2, 10); n2 = random.randint(1, n1)
             ans = n1 - n2
-        st.session_state.m_q = f"{n1} {op} {n2}"
-        st.session_state.m_ans = ans
+        st.session_state.q_text = f"{n1} {op} {n2}"
+        st.session_state.q_ans = ans
         opts = {ans}
         while len(opts) < 4: opts.add(random.randint(0, 10))
-        st.session_state.m_opts = sorted(list(opts))
+        st.session_state.q_opts = sorted(list(opts))
     else:
         w = random.choice(list(WORDS_DB.keys()))
         st.session_state.w_target = w
         st.session_state.w_emoji = WORDS_DB[w]
         opts = random.sample([x for x in WORDS_DB.keys() if x != w], 3) + [w]
         random.shuffle(opts)
-        st.session_state.w_opts = opts
+        st.session_state.q_opts = opts
 
-# --- 3. 游戏渲染 ---
+# --- 3. 界面渲染 ---
 if 'game_mode' not in st.session_state:
     st.session_state.game_mode = "识字"
     refresh_q("word")
 
-# 顶部紧凑导航
-c1, c2 = st.columns(2)
-with c1:
-    if st.button("🔢 算术", type="primary" if st.session_state.game_mode=="数学" else "secondary"):
+# 顶部切换区
+st.write('<p style="text-align:center; font-weight:bold; font-size:24px; color:#444;">宝贝练习场</p>', unsafe_allow_html=True)
+nav_c1, nav_c2 = st.columns(2)
+with nav_c1:
+    m_active = "_active" if st.session_state.game_mode == "数学" else ""
+    if st.button("🔢 算术模式", key=f"nav_math{m_active}", use_container_width=True):
         st.session_state.game_mode = "数学"
         refresh_q("math")
         st.rerun()
-with c2:
-    if st.button("📖 识字", type="primary" if st.session_state.game_mode=="识字" else "secondary"):
+with nav_c2:
+    w_active = "_active" if st.session_state.game_mode == "识字" else ""
+    if st.button("📖 识字模式", key=f"nav_word{w_active}", use_container_width=True):
         st.session_state.game_mode = "识字"
         refresh_q("word")
         st.rerun()
 
-# 搞怪表情处理逻辑
-if st.session_state.get('wrong_trigger'):
-    st.markdown(f'<p class="funny-error">{random.choice(["🤪", "👻", "🙊", "🙉", "👽"])}</p>', unsafe_allow_html=True)
-    st.toast("不对哦，再猜猜！")
+# 搞怪反馈
+if st.session_state.get('show_error'):
+    st.markdown(f'<p class="funny-error">{random.choice(["🤪", "👻", "🙊", "👽"])}</p>', unsafe_allow_html=True)
 
-# 主展示区
-st.markdown('<div class="question-card">', unsafe_allow_html=True)
-if st.session_state.game_mode == "数学":
-    st.markdown(f'<p class="huge-math">{st.session_state.m_q} = ?</p>', unsafe_allow_html=True)
-else:
-    st.markdown(f'<p class="huge-emoji">{st.session_state.word_emoji}</p>', unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
+# 题目展示区
+st.markdown(f'''
+<div class="question-container">
+    <div class="mode-label">Q) {st.session_state.game_mode} Q</div>
+    <div class="huge-text">{"< " + (st.session_state.q_text if st.session_state.game_mode=="数学" else st.session_state.w_emoji) + " >"}</div>
+    <div style="color:#888; font-size:12px;">stsesssion state 💡</div>
+</div>
+''', unsafe_allow_html=True)
 
-# 答案按钮：2x2 排列
-col_a, col_b = st.columns(2)
-current_opts = st.session_state.m_opts if st.session_state.game_mode == "数学" else st.session_state.w_opts
-
-for i, opt in enumerate(current_opts):
-    target_col = col_a if i < 2 else col_b
-    if target_col.button(str(opt), key=f"btn_{opt}_{i}"):
-        correct = (st.session_state.game_mode == "数学" and opt == st.session_state.m_ans) or \
-                  (st.session_state.game_mode == "识字" and opt == st.session_state.w_target)
-        if correct:
+# 选项按钮：2x2 排列
+col_left, col_right = st.columns(2)
+for i, opt in enumerate(st.session_state.q_opts):
+    target_col = col_left if i < 2 else col_right
+    if target_col.button(str(opt), key=f"btn_{opt}_{i}", use_container_width=True):
+        is_correct = (st.session_state.game_mode == "数学" and opt == st.session_state.q_ans) or \
+                     (st.session_state.game_mode == "识字" and opt == st.session_state.w_target)
+        if is_correct:
             st.session_state.answered = True
-            st.session_state.wrong_trigger = False
+            st.session_state.show_error = False
             st.balloons()
         else:
-            st.session_state.wrong_trigger = True
+            st.session_state.show_error = True
             st.rerun()
 
-# 成功后的下一步
+# 下一题
 if st.session_state.get('answered'):
-    if st.button("✅ 做对啦！点我下一题", use_container_width=True):
+    if st.button("🌟 下一题 🌟", key="next_step", use_container_width=True):
         refresh_q("math" if st.session_state.game_mode=="数学" else "word")
         st.rerun()
