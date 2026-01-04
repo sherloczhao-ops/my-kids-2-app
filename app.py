@@ -165,6 +165,8 @@ for i, opt in enumerate(st.session_state.q_opts):
             st.session_state.answered = True
             st.session_state.show_error = False
             st.balloons()
+            st.toast("🎉 太棒了！")
+            time.sleep(1.5)
             refresh_q("math" if st.session_state.game_mode == "数学" else "word")
             st.rerun()
         else:
