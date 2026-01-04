@@ -45,14 +45,14 @@ div[data-testid="stHorizontalBlock"] {
     margin: 0 auto;
 }
 .stButton > button[key^="btn_"] {
-    background-color: #FF6F61 !important; /* 图片中的主红色 */
+    background-color: #FF85A1 !important; /* 图片中的主红色 */
     color: white !important;
     border-radius: 12px !important;
     height: 65px !important;
     font-size: 24px !important;
     font-weight: bold !important;
     border: none !important;
-    box-shadow: 0 4px 0 #E55B4F !important; /* 底部深色投影 */
+    box-shadow: 0 4px 0 #FF477E !important; /* 底部深色投影 */
     margin-bottom: 10px !important;
 }
 
@@ -73,9 +73,27 @@ footer {visibility: hidden;}
 
 # --- 2. 核心词库与逻辑 ---
 WORDS_DB = {
-    "太阳": "☀️", "月亮": "🌙", "星星": "⭐", "彩虹": "🌈", "大树": "🌳",
-    "苹果": "🍎", "小狗": "🐶", "兔子": "🐰", "汽车": "🚗", "飞机": "✈️"
-    # 这里可根据需要继续扩展至100个
+    "太阳": "☀️", "月亮": "🌙", "星星": "⭐", "彩虹": "🌈", "白云": "☁️",
+    "下雨": "🌧️", "下雪": "❄️", "闪电": "⚡", "大风": "🌬️", "火焰": "🔥",
+    "大树": "🌳", "森林": "🌲", "鲜花": "🌸", "草地": "🌱", "种子": "🌱",
+    "泥土": "🟫", "高山": "⛰️", "大海": "🌊", "瀑布": "💦", "地球": "🌍",
+    "小狗": "🐶", "小猫": "🐱", "兔子": "🐰", "熊猫": "🐼", "老虎": "🐯",
+    "狮子": "🦁", "大象": "🐘", "长颈鹿": "🦒", "斑马": "🦓", "猴子": "🐵",
+    "袋鼠": "🦘", "企鹅": "🐧", "松鼠": "🐿️", "小鸡": "🐥", "鸭子": "🦆",
+    "孔雀": "🦚", "青蛙": "🐸", "乌龟": "🐢", "螃蟹": "🦀", "章鱼": "🐙",
+    "蝴蝶": "🦋", "蜜蜂": "🐝", "蚂蚁": "🐜", "恐龙": "🦖", "金鱼": "🐠",
+    "苹果": "🍎", "香蕉": "🍌", "西瓜": "🍉", "草莓": "🍓", "葡萄": "🍇",
+    "菠萝": "🍍", "樱桃": "🍒", "桃子": "🍑", "梨子": "🍐", "柠檬": "🍋",
+    "蔬菜": "🥗", "玉米": "🌽", "辣椒": "🌶️", "西红柿": "🍅", "胡萝卜": "🥕",
+    "蘑菇": "🍄", "米饭": "🍚", "面包": "🍞", "鸡蛋": "🥚", "牛奶": "🥛",
+    "汽车": "🚗", "公交车": "🚌", "火车": "🚂", "飞机": "✈️", "火箭": "🚀",
+    "轮船": "🚢", "自行车": "🚲", "救护车": "🚑", "消防车": "🚒", "警车": "🚓",
+    "房子": "🏠", "学校": "🏫", "医院": "🏥", "公园": "🌳", "城堡": "🏰",
+    "书本": "📖", "铅笔": "✏️", "书包": "🎒", "剪刀": "✂️", "尺子": "📏",
+    "衣服": "👕", "裙子": "👗", "鞋子": "👟", "帽子": "🎩", "雨伞": "☂️",
+    "钥匙": "🔑", "时钟": "⏰", "手机": "📱", "电视": "📺", "牙刷": "🪥",
+    "足球": "⚽", "篮球": "🏀", "游泳": "🏊", "跑步": "🏃", "跳舞": "💃",
+    "唱歌": "🎤", "画画": "🎨", "睡觉": "😴", "开心": "😄", "礼物": "🎁"
 }
 
 def refresh_q(mode):
@@ -131,7 +149,7 @@ if st.session_state.get('show_error'):
 st.markdown(f'''
 <div class="question-container">
     <div class="mode-label">Q) {st.session_state.game_mode} Q</div>
-    <div class="huge-text">{"< " + (st.session_state.q_text if st.session_state.game_mode=="数学" else st.session_state.w_emoji) + " >"}</div>
+    <div class="huge-text">{(st.session_state.q_text if st.session_state.game_mode=="数学" else st.session_state.w_emoji)}</div>
     <div style="color:#888; font-size:12px;">stsesssion state 💡</div>
 </div>
 ''', unsafe_allow_html=True)
