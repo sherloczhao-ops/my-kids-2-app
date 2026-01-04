@@ -162,8 +162,6 @@ for i, opt in enumerate(st.session_state.q_opts):
         is_correct = (st.session_state.game_mode == "数学" and opt == st.session_state.q_ans) or \
                      (st.session_state.game_mode == "识字" and opt == st.session_state.w_target)
         if is_correct:
-            st.session_state.answered = True
-            st.session_state.show_error = False
             st.balloons()
             st.toast("🎉 太棒了！")
             time.sleep(1.5)
