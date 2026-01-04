@@ -107,7 +107,7 @@ def refresh_q(mode):
         else:
             n1 = random.randint(2, 10); n2 = random.randint(1, n1)
             ans = n1 - n2
-        st.session_state.q_text = f"{n1} {op} {n2}"
+        st.session_state.q_text = f"{n1} {op} {n2} = "
         st.session_state.q_ans = ans
         opts = {ans}
         while len(opts) < 4: opts.add(random.randint(0, 10))
