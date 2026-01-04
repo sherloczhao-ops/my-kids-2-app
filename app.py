@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import time
 
 # --- 1. 像素级还原图片设计风格 ---
 st.markdown("""
@@ -163,7 +164,7 @@ for i, opt in enumerate(st.session_state.q_opts):
                      (st.session_state.game_mode == "识字" and opt == st.session_state.w_target)
         if is_correct:
             st.balloons()
-            time.sleep(1.5) 
+            time.sleep(0.5) 
             refresh_q("math" if st.session_state.game_mode == "数学" else "word")
             st.rerun()
         else:
